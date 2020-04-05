@@ -2,52 +2,35 @@
 /**
  * Scans directories for MS Word documents
  * and extracts their content into a
- * plain text file
+ * plain text file.
+ * 
+ * The documents must be in a directory
+ * named 'documetns'
  */
 
 include_once 'document-converter.php';
 
 
-$dir1		= 'D:\wamp\www\mofa-copies\\';
-$level1	= scandir($dir1);
+dir_digger(__DIR__ . '\documents\\', scandir(__DIR__ . '\documents\\'));
 
-echo 'D:\wamp\www\mofa-copies\\ <br>';
 
-// Enters categories folders
-foreach ($level1 as $key => $folder_name) {
-	if ($key > 1 && $key < 12) {
-		$dir2		= $dir1 . $folder_name;
-		$level2	= scandir($dir2);
+/**
+ * Goes through all the nested directries
+ * 
+ * @param string $dir_url
+ * @param array $dir_cont
+ */
+function dir_digger($dir_url, $dir_cont) {
 
-		echo '#CAT#' . $folder_name . '<br>';
+	for ($i = 2; $i < count($dir_cont); $i++) {
+		if (is_dir($dir_url . $dir_cont[$i])) {
+			$nested_dir_url		= $dir_url . $dir_cont[$i] . '\\';
+			$nested_dir_cont	= scandir($nested_dir_url);
 
-		// Lists movies
-		foreach ($level2 as $key => $file_name) {
-			if ($key > 1 && $file_name != 'shorts') {
-				echo '<br>' . $file_name . '<br>';
-
-				$new_doc = new Docx_Conversion($dir1 . $folder_name . '\\' . $file_name);
-				echo '<br>' . $new_doc->convert_to_text() . '<br>';
-			}
-
-			if ($file_name == 'shorts') {
-				$dir3		= $dir1 . $folder_name . '\shorts';
-				$level3	= scandir($dir3);
-
-				echo '<br>##SHORTS##<br>';
-
-				// Lists movies in shorts folder
-				foreach ($level3 as $key => $short_name) {
-					if ($key > 1) {
-						echo '<br>' . $short_name . '<br>';
-
-						$new_doc = new Docx_Conversion($dir1 . $folder_name . '\shorts\\' . $short_name);
-						echo '<br>' . $new_doc->convert_to_text() . '<br>';
-					}
-				}
-			}
+			dir_digger($nested_dir_url, $nested_dir_cont);
 		}
-
-		echo '<br>#END-CAT#<br>';
+		else {
+			echo('<div style="font-family: monospace; color: rgb(0, 0, 0, .5);">' . $dir_cont[$i] . '</div>');
+		}
 	}
 }
