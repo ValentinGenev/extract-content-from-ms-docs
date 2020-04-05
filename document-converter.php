@@ -1,44 +1,39 @@
 <?php
 /**
  * Script to extract text from MS Word documents
- * 
+ *
  * Based on stackoverflow answer:
  * @link https://stackoverflow.com/questions/19503653/how-to-extract-text-from-word-file-doc-docx-xlsx-pptx-php
  */
 
 
-class Docx_Conversion
-{
+class Docx_Conversion {
 	private $filename;
 
-	public function __construct($filePath)
-	{
+	public function __construct($filePath) {
 		$this->filename = $filePath;
 	}
 
-	private function read_doc()
-	{
-		$fileHandle = fopen($this->filename, "r");
+	private function read_doc() {
+		$fileHandle = fopen($this->filename, 'r');
 		$line       = @fread($fileHandle, filesize($this->filename));
 		$lines			= explode(chr(0x0D), $line);
-		$outtext		= "";
+		$outtext		= '';
 
 		foreach ($lines as $thisline) {
 			$pos = strpos($thisline, chr(0x00));
 
-			if (($pos !== FALSE) || (strlen($thisline) == 0)) {
+			if ($pos !== false || strlen($thisline) == 0) {
 			}
 			else {
-				$outtext .= $thisline . " ";
+				$outtext .= $thisline . ' ';
 			}
 		}
 
-		$outtext = preg_replace("/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/", "", $outtext);
-		return $outtext;
+		return preg_replace("/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/", '', $outtext);
 	}
 
-	private function read_docx()
-	{
+	private function read_docx() {
 		$striped_content	= '';
 		$content					= '';
 
@@ -57,19 +52,14 @@ class Docx_Conversion
 
 		zip_close($zip);
 
-		$content					= str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
-		$content					= str_replace('</w:r></w:p>', "\r\n", $content);
+		$content					= str_replace('</w:r></w:p></w:tc><w:tc>', ' ', $content);
+		$content					= str_replace('</w:r></w:p>', '\r\n', $content);
 		$striped_content	= strip_tags($content);
 
 		return $striped_content;
 	}
 
-	public function convert_to_text()
-	{
-		if (isset($this->filename) && !file_exists($this->filename)) {
-			return "File doesn't exist";
-		}
-
+	public function convert_to_text() {
 		$fileArray = pathinfo($this->filename);
 		$file_ext  = $fileArray['extension'];
 
@@ -81,9 +71,9 @@ class Docx_Conversion
 			case 'docx':
 				return $this->read_docx();
 				break;
-			
+
 			default:
-				return "Invalid file type";
+				return 'Invalid file type';
 				break;
 		}
 	}

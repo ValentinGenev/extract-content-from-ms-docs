@@ -3,7 +3,7 @@
  * Scans directories for MS Word documents
  * and extracts their content into a
  * plain text file.
- * 
+ *
  * The documents must be in a directory
  * named 'documetns'
  */
@@ -16,11 +16,13 @@ dir_digger(__DIR__ . '\documents\\', scandir(__DIR__ . '\documents\\'));
 
 /**
  * Goes through all the nested directries
- * 
+ *
  * @param string $dir_url
  * @param array $dir_cont
  */
 function dir_digger($dir_url, $dir_cont) {
+	echo '<div style="margin-left: 1rem;">';
+	echo '<strong>' . $dir_url . '</strong>';
 
 	for ($i = 2; $i < count($dir_cont); $i++) {
 		if (is_dir($dir_url . $dir_cont[$i])) {
@@ -30,7 +32,15 @@ function dir_digger($dir_url, $dir_cont) {
 			dir_digger($nested_dir_url, $nested_dir_cont);
 		}
 		else {
-			echo('<div style="font-family: monospace; color: rgb(0, 0, 0, .5);">' . $dir_cont[$i] . '</div>');
+			$file_url		= $dir_url . $dir_cont[$i];
+			$file_obj		= new Docx_Conversion($file_url);
+			$file_cont	= $file_obj->convert_to_text();
+
+			if ($file_cont !== 'Invalid file type') {
+				echo '<div style="padding: 1rem;">' . $file_cont . '</div>';
+			}
 		}
 	}
+
+	echo '</div>';
 }
