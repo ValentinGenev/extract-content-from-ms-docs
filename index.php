@@ -3,15 +3,12 @@
  * Scans directories for MS Word documents
  * and extracts their content into a
  * plain text file.
- *
- * The documents must be in a directory
- * named 'documetns'
  */
 
 include_once 'document-converter.php';
 
 
-dir_digger(__DIR__ . '\documents\\', scandir(__DIR__ . '\documents\\'));
+dir_digger(__DIR__ . '\documents\\', scandir(__DIR__ . '\documents\\')); // Windows path
 
 
 /**

@@ -2,7 +2,7 @@
 /**
  * Script to extract text from MS Word documents
  *
- * Based on stackoverflow answer:
+ * Based on a stackoverflow answer:
  * @link https://stackoverflow.com/questions/19503653/how-to-extract-text-from-word-file-doc-docx-xlsx-pptx-php
  */
 
