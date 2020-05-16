@@ -3,7 +3,7 @@ The script in this repository crawls through directories, looks for MS Word docu
 Remember to change the Windows `\` with `/` in the paths if you're running the script on Linux.
 
 ## Requirements
-- folder named `/dobumetns` that will contain the documents in the root dir.
+- folder named `/documetns` that will contain the documents in the root dir.
 
 ## Known issues
 - in Windows, the script can't output `.doc` files properly, outputs a string of random characters.
