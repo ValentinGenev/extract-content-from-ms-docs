@@ -10,3 +10,10 @@ Remember to change the Windows `\` with `/` in the paths if you're running the s
 
 ## Resoruces
 - base on a [stackoverflow answer](https://stackoverflow.com/questions/19503653/how-to-extract-text-from-word-file-doc-docx-xlsx-pptx-php)
+
+## TODO:
+- craete interface that allows the upload of multiple forms;
+- extract the recursive serach into it's own function;
+- refactor the main class to allow scaling;
+- add markup parser;
+- add more supported files.
