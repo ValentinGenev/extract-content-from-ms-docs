@@ -5,14 +5,14 @@
  * plain text file.
  */
 
-include_once 'document-converter.php';
+include_once 'inc/document-converter.php';
 
 
 dir_digger(__DIR__ . '\documents\\', scandir(__DIR__ . '\documents\\')); // Windows path
 
 
 /**
- * Goes through all the nested directries
+ * Goes through all the nested directories
  *
  * @param string $dir_url
  * @param array $dir_cont
@@ -29,12 +29,12 @@ function dir_digger($dir_url, $dir_cont) {
 			dir_digger($nested_dir_url, $nested_dir_cont);
 		}
 		else {
-			$file_url		= $dir_url . $dir_cont[$i];
-			$file_obj		= new Docx_Conversion($file_url);
-			$file_cont	= $file_obj->convert_to_text();
+			// TODO: add the file check around here:
+			$fileName = $dir_url . $dir_cont[$i];
+			$fileContent = DocxToHTML::getText($fileName);
 
-			if ($file_cont !== 'Invalid file type') {
-				echo '<div style="padding: 1rem;">' . $file_cont . '</div>';
+			if ($fileContent !== 'Invalid file type') {
+				echo '<div style="padding: 1rem;">' . $fileContent . '</div>';
 			}
 		}
 	}
